@@ -22,14 +22,15 @@ int value_back_2;
     int a=value_back_1+value_back_2;
     printf("%d\n",a);
 int value_idx_4;
- if(vector_getN(v,0,&value_idx_4)){fprintf(stderr, "Error at %s:%d:%s\n", __FILE__, __LINE__, __func__);return -1;}
+                if(vector_getN(v,0,&value_idx_4)){
+                    fprintf(stderr, "Error at %s:%d:%s\n", __FILE__, __LINE__, __func__);
+                    return -1;
+                }
 int value_back_3;
  if(vector_back(v0,&value_back_3)){fprintf(stderr, "Error at %s:%d:%s\n", __FILE__, __LINE__, __func__);return -1;}
     a=value_idx_4+value_back_3;
     printf("%d\n",a);
-int value_idx_5;
- if(vector_getN(v,5,&value_idx_5)){fprintf(stderr, "Error at %s:%d:%s\n", __FILE__, __LINE__, __func__);return -1;}
-    //a=value_idx_5; // Error
+    //a=v[5]; // Error
 vector_free(v0);
 vector_free(v);
 return 0;}

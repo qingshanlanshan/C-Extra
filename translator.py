@@ -57,15 +57,17 @@ with open(dstfile, "w") as f:
         if index > len(lines)-1:
             break
         line = lines[index]
+        if line.strip()[:2] == "//":
+            continue
         
         matchObj = re.findall(r'([a-zA-Z_]\w*).get\(([a-zA-Z_]\w*)\)',line)
         if len(matchObj)>0:
             debug("get {}".format(matchObj))
             for m in matchObj:
                 if m[0] in hashmap_map:
-                    name=m[0]
+                    h=hashmap_map[m[0]]
                     key=m[1]
-                    line=re.sub(r'([a-zA-Z_]\w*).get\(([a-zA-Z_]\w*)\)', f"hashmap_get({name},{key})", line,count=1)
+                    line=re.sub(r'([a-zA-Z_]\w*).get\(([a-zA-Z_]\w*)\)', f"*({h.value_type}*)hashmap_get({h.name},(void*)&{key})", line,count=1)
                     
         matchObj = re.findall(r'([a-zA-Z_]\w*).size\(\)',line)
         if len(matchObj)>0:
@@ -185,7 +187,7 @@ with open(dstfile, "w") as f:
             continue
         
         # push_back
-        matchObj = re.search( r'([a-zA-Z_]\w*)\.push_back\(([a-zA-Z_]\w*)\);', line)
+        matchObj = re.search( r'([a-zA-Z_]\w*).push_back\(([a-zA-Z_]\w*)\);', line)
         if matchObj:
             if matchObj.group(1) not in vector_map:
                 continue
@@ -195,9 +197,9 @@ with open(dstfile, "w") as f:
             line=f"if(vector_push_back({v.name},sizeof({v.type}),&{item})){{fprintf(stderr, \"Error at %s:%d:%s\\n\", __FILE__, __LINE__, __func__);return -1;}}\n"
             continue
         
-        matchObj = re.search( r'([a-zA-Z_]\w*)\.push_back\((\d+)\);', line)
+        matchObj = re.search( r'([a-zA-Z_]\w*).push_back\((\d+)\)\s*;', line)
         if matchObj:
-            if matchObj.group(1) in vector_map:
+            if not matchObj.group(1) in vector_map:
                 continue
             debug("push_back 2 {}".format(matchObj.groups()))
             v=vector_map[matchObj.group(1)]
@@ -327,7 +329,7 @@ with open(dstfile, "w") as f:
             value=matchObj.group(3)
             if not name in hashmap_map:
                 continue
-            line=f"""if(hashmap_insert({name},{key},{value}))
+            line=f"""if(hashmap_insert({name},(void*)&{key},(void*)&{value}))
             {{
                 fprintf(stderr, \"Error at %s:%d:%s\\n\", __FILE__, __LINE__, __func__);
                 return -1;
@@ -341,7 +343,7 @@ with open(dstfile, "w") as f:
             key=matchObj.group(2)
             if not name in hashmap_map:
                 continue
-            line=f"""if(hashmap_remove({name},{key}))
+            line=f"""if(hashmap_remove({name},(void*)&{key}))
             {{
                 fprintf(stderr, \"Error at %s:%d:%s\\n\", __FILE__, __LINE__, __func__);
                 return -1;

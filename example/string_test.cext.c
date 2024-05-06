@@ -28,4 +28,7 @@ printf("%c\n",string_at(str2,0));
 
 string_append(str1,string_get(str2));
 printf("%s\n",string_get(str1));   
+string_free(str1);
+string_free(str2);
+string_free(s);
 return 0;}

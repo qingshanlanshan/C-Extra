@@ -2,15 +2,15 @@
 
 int main()
 {
-    hashmap<string,string> h=hashmap<string,string>(10);
-    string str1("hello"); 
-    string str2("world");
+    hashmap<int,int> h=hashmap<int,int>(10);
+    
+    int key=1;
+    int value=2;
+    h.insert(key,value);
+    printf("%d\n",h.get(key));
+    printf("%d\n",h.size());
 
-    h.insert(str1,str2);
-
-    printf("%s\n",h.get(str1));
-
-    h.remove(str1);
+    h.remove(key);
     printf("%d\n",h.size());
  
     return 0; 
