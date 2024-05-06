@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int main()
+{
+    vector<int> v0;
+    v0=vector<int>(2);
+    v0.push_back(5);
+
+    vector<int> v=vector<int>(2);
+    for(int i=0;i<3;++i)
+    {
+        v.push_back(i);
+    }
+    v.pop_back();
+
+    int a=v.back()+v0.back();
+    printf("%d\n",a);
+    a=v[0]+v0.back();
+    printf("%d\n",a);
+    //a=v[5]; // Error
+    return 0;
+}

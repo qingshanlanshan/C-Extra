@@ -1,0 +1,10 @@
+Usage: ./run.sh example/xxx.cext
+
+扩充C语法，计划包括
+vector
+string
+hashmap // 现在在这里
+数据和操作的封装（结构体有函数成员）
+匿名函数
+auto
+smart ptr

@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main()
+{
+    hashmap<string,string> h=hashmap<string,string>(10);
+    string str1("hello"); 
+    string str2("world");
+
+    h.insert(str1,str2);
+
+    printf("%s\n",h.get(str1));
+
+    h.remove(str1);
+    printf("%d\n",h.size());
+ 
+    return 0; 
+}
